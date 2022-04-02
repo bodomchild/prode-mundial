@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController("teamAdminController")
 @RequestMapping("/api/v1/admin/team")
@@ -22,8 +21,7 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO team) throws AppException {
         var createdTeam = teamService.createTeam(team);
-        var adminUriString = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTeam.getId()).toUriString();
-        var uri = UriComponentsBuilder.fromUriString(adminUriString.replace("/admin", "")).build().toUri();
+        var uri = ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api/v1/team/{id}").build(createdTeam.getId());
         return ResponseEntity.created(uri).build();
     }
 

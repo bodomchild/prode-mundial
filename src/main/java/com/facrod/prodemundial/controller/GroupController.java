@@ -1,8 +1,8 @@
 package com.facrod.prodemundial.controller;
 
-import com.facrod.prodemundial.dto.TeamDTO;
+import com.facrod.prodemundial.dto.GroupDTO;
 import com.facrod.prodemundial.exceptions.AppException;
-import com.facrod.prodemundial.service.TeamService;
+import com.facrod.prodemundial.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/team")
+@RequestMapping("/api/v1/group")
 @RequiredArgsConstructor
-public class TeamController {
+public class GroupController {
 
-    private final TeamService teamService;
+    private final GroupService groupService;
 
     @GetMapping
-    public ResponseEntity<List<TeamDTO>> getAll() {
-        return ResponseEntity.ok(teamService.getTeams());
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
+        return ResponseEntity.ok(groupService.getAllGroups());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TeamDTO> findById(@PathVariable String id) throws AppException {
-        return ResponseEntity.ok(teamService.getTeam(id));
+    @GetMapping("/{group}")
+    public ResponseEntity<GroupDTO> getGroup(@PathVariable("group") String group) throws AppException {
+        return ResponseEntity.ok(groupService.getGroup(group));
     }
 
 }
