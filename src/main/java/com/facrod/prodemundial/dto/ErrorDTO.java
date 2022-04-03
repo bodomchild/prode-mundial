@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,5 +16,16 @@ public class ErrorDTO {
 
     private String status;
     private String error;
+    private List<FieldError> errors;
+
+    @Getter
+    @Setter
+    public static class FieldError {
+        private String field;
+        private String message;
+
+        public FieldError() {
+        }
+    }
 
 }

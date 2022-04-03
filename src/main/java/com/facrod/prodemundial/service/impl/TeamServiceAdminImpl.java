@@ -22,7 +22,7 @@ public class TeamServiceAdminImpl implements TeamService {
     @Override
     public TeamDTO getTeam(String id) throws AppException {
         var team = teamRepository.findById(id).orElseThrow(() -> {
-            log.error("Error al buscar equipo con id {}", id);
+            log.error("Error al buscar equipo con id '{}'", id);
             return new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
         });
         return TeamMapper.toDto(team);
@@ -36,6 +36,11 @@ public class TeamServiceAdminImpl implements TeamService {
 
     @Override
     public TeamDTO createTeam(TeamDTO team) throws AppException {
+        if (teamRepository.existsById(team.getId())) {
+            log.error("Error al crear equipo con id '{}': ya existe", team.getId());
+            throw new AppException(HttpStatus.CONFLICT, "El equipo ya existe");
+        }
+
         var entity = TeamMapper.toEntity(team);
 
         try {
@@ -51,6 +56,11 @@ public class TeamServiceAdminImpl implements TeamService {
 
     @Override
     public void deleteTeam(String id) throws AppException {
+        if (!teamRepository.existsById(id)) {
+            log.error("Error al eliminar equipo con id '{}': no existe", id);
+            throw new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
+        }
+
         try {
             teamRepository.deleteById(id);
         } catch (Exception e) {

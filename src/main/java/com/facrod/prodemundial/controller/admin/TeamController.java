@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+
 @RestController("teamAdminController")
 @RequestMapping("/api/v1/admin/team")
 public class TeamController {
@@ -19,7 +21,7 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO team) throws AppException {
+    public ResponseEntity<TeamDTO> createTeam(@RequestBody @Valid TeamDTO team) throws AppException {
         var createdTeam = teamService.createTeam(team);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api/v1/team/{id}").build(createdTeam.getId());
         return ResponseEntity.created(uri).build();
