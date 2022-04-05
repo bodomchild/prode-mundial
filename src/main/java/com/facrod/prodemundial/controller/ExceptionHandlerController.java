@@ -2,6 +2,7 @@ package com.facrod.prodemundial.controller;
 
 import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,14 @@ public class ExceptionHandlerController {
         error.setStatus(BAD_REQUEST.getReasonPhrase());
         error.setErrors(fieldErrors);
 
+        return ResponseEntity.status(BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<ErrorDTO> invalidFormatExceptionHandler(InvalidFormatException e) {
+        var error = new ErrorDTO();
+        error.setStatus(BAD_REQUEST.getReasonPhrase());
+        error.setError("Error al deserializar '" + e.getValue() + "' a la clase '" + e.getTargetType().getSimpleName() + "'");
         return ResponseEntity.status(BAD_REQUEST).body(error);
     }
 

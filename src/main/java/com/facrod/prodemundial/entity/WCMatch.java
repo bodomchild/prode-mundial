@@ -1,6 +1,5 @@
 package com.facrod.prodemundial.entity;
 
-import com.facrod.prodemundial.enums.MatchResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -30,12 +29,11 @@ public class WCMatch {
     @ManyToOne
     private WCTeam awayTeam;
 
+    private boolean finished;
+
     private int homeScore;
 
     private int awayScore;
-
-    @Enumerated(EnumType.STRING)
-    private MatchResult result;
 
     private boolean extraTime;
 
@@ -52,7 +50,7 @@ public class WCMatch {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        WCMatch wcMatch = (WCMatch) o;
+        var wcMatch = (WCMatch) o;
         return id != null && Objects.equals(id, wcMatch.id);
     }
 

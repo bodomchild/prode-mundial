@@ -6,12 +6,14 @@ import com.facrod.prodemundial.mapper.TeamMapper;
 import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Primary
 @Service("teamService")
 @RequiredArgsConstructor
@@ -21,14 +23,16 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDTO getTeam(String id) throws AppException {
-        var team = teamRepository.findById(id).orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado"));
+        var team = teamRepository.findById(id).orElseThrow(() -> {
+            log.error("Error al buscar equipo con id '{}'", id);
+            return new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
+        });
         return TeamMapper.toDto(team);
     }
 
     @Override
     public List<TeamDTO> getTeams() {
-        var teams = teamRepository.findAll();
-        return TeamMapper.toDto(teams);
+        return TeamMapper.toDto(teamRepository.findAll());
     }
 
 }

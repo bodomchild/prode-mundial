@@ -19,7 +19,7 @@ import java.util.Objects;
 @Table(name = "world_cup_team")
 public class WCTeam {
 
-    // TODO: 1/4/22 agregar jugadores
+    // TODO: 1/4/22 agregar jugadores y tarjetas
 
     @Id
     private String id;
@@ -48,7 +48,7 @@ public class WCTeam {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        WCTeam wcTeam = (WCTeam) o;
+        var wcTeam = (WCTeam) o;
         return id != null && Objects.equals(id, wcTeam.id);
     }
 

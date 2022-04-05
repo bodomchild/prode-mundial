@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -14,9 +15,11 @@ import javax.validation.constraints.NotNull;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TeamDTO {
 
-    @NotNull(message = "El id del equipo es obligatorio")
+    @NotBlank(message = "El id del equipo es obligatorio")
+    @Pattern(regexp = "[A-Z]{3}", message = "El id del equipo debe tener 3 letras mayúsculas")
     private String id;
-    @NotNull(message = "El nombre del equipo es obligatorio")
+    @NotBlank(message = "El nombre del equipo es obligatorio")
+    @Pattern(regexp = "^[A-Z][A-Za-z\\s]*$", message = "El nombre del equipo debe empezar con mayúscula")
     private String name;
     private int points;
     private int goals;
@@ -26,7 +29,8 @@ public class TeamDTO {
     private int draws;
     private int losses;
     private int playedGames;
-    @NotNull(message = "El grupo del equipo es obligatorio")
+    @NotBlank(message = "El grupo del equipo es obligatorio")
+    @Pattern(regexp = "[A-Z]{1}", message = "El grupo del equipo debe tener 1 letra mayúscula")
     private String group;
 
 }

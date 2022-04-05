@@ -24,7 +24,7 @@ public class TeamController {
     public ResponseEntity<TeamDTO> createTeam(@RequestBody @Valid TeamDTO team) throws AppException {
         var createdTeam = teamService.createTeam(team);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api/v1/team/{id}").build(createdTeam.getId());
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(createdTeam);
     }
 
     @DeleteMapping("/{id}")

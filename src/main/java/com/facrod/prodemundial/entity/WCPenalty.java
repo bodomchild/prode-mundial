@@ -32,7 +32,7 @@ public class WCPenalty {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        WCPenalty wcPenalty = (WCPenalty) o;
+        var wcPenalty = (WCPenalty) o;
         return id != null && Objects.equals(id, wcPenalty.id);
     }
 

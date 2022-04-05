@@ -5,6 +5,7 @@ import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.mapper.TeamMapper;
 import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.TeamService;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamServiceAdminImpl implements TeamService {
 
+    private final Gson gson;
     private final TeamRepository teamRepository;
 
     @Override
@@ -30,8 +32,7 @@ public class TeamServiceAdminImpl implements TeamService {
 
     @Override
     public List<TeamDTO> getTeams() {
-        var teams = teamRepository.findAll();
-        return TeamMapper.toDto(teams);
+        return TeamMapper.toDto(teamRepository.findAll());
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TeamServiceAdminImpl implements TeamService {
         var entity = TeamMapper.toEntity(team);
 
         try {
-            log.info("Creando equipo: {}", entity);
+            log.info("Creando equipo: {}", gson.toJson(entity));
             entity = teamRepository.save(entity);
         } catch (Exception e) {
             log.error("Error al crear equipo: {}", e.getMessage());
@@ -62,10 +63,11 @@ public class TeamServiceAdminImpl implements TeamService {
         }
 
         try {
+            log.info("Eliminando equipo con id '{}'", id);
             teamRepository.deleteById(id);
         } catch (Exception e) {
-            log.error("Error al borrar equipo con id {}: {}", id, e.getMessage());
-            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al borrar equipo");
+            log.error("Error al eliminar equipo con id {}: {}", id, e.getMessage());
+            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar equipo");
         }
     }
 
