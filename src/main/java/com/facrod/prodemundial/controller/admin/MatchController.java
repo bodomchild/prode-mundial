@@ -31,13 +31,15 @@ public class MatchController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateMatchResult(@RequestBody @Valid MatchDTO match) throws AppException {
+    public ResponseEntity<Void> updateMatchResult(@RequestBody MatchDTO match) throws AppException {
+        // TODO: 6/4/22 agregar validacion (usar otro dto?)
         matchService.updateMatchResult(match);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(consumes = "application/merge-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateMatchStartTime(@RequestBody MatchDTO match) throws AppException {
+        // TODO: 6/4/22 agregar validacion (usar otro dto?)
         matchService.updateMatchStartTime(match);
         return ResponseEntity.noContent().build();
     }

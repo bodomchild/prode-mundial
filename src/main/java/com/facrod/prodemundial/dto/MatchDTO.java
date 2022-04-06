@@ -53,8 +53,6 @@ public class MatchDTO {
     private boolean penalties;
     private PenaltiesRoundDTO penaltiesRound;
 
-    // TODO: 5/4/22 agregar penales
-
     @Getter
     @Builder
     public static class TeamDTO {

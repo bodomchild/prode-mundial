@@ -1,10 +1,14 @@
 package com.facrod.prodemundial.service.impl;
 
 import com.facrod.prodemundial.dto.MatchDTO;
+import com.facrod.prodemundial.dto.PenaltiesRoundDTO;
+import com.facrod.prodemundial.entity.WCPenaltiesRound;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.mapper.MatchMapper;
 import com.facrod.prodemundial.mapper.PenaltiesRoundMapper;
 import com.facrod.prodemundial.repository.MatchRepository;
+import com.facrod.prodemundial.repository.PenaltiesRoundRepository;
+import com.facrod.prodemundial.repository.PenaltyRepository;
 import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.MatchService;
 import com.google.gson.Gson;
@@ -13,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +28,8 @@ public class MatchServiceAdminImpl implements MatchService {
 
     private final Gson gson;
     private final MatchRepository matchRepository;
+    private final PenaltiesRoundRepository penaltiesRoundRepository;
+    private final PenaltyRepository penaltyRepository;
     private final TeamRepository teamRepository;
 
     @Override
@@ -75,6 +83,11 @@ public class MatchServiceAdminImpl implements MatchService {
             return new AppException(HttpStatus.NOT_FOUND, "Partido no encontrado");
         });
 
+        if (entity.getStartTime().isAfter(LocalDateTime.now())) {
+            throw new AppException(HttpStatus.CONFLICT,
+                    "El partido todavía no se juega. Horario: " + entity.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
+
         entity.setFinished(true);
         entity.setHomeScore(match.getHomeScore());
         entity.setAwayScore(match.getAwayScore());
@@ -87,7 +100,7 @@ public class MatchServiceAdminImpl implements MatchService {
 
         if (match.isPenalties()) {
             entity.setPenalties(match.isPenalties());
-            entity.setPenaltiesRound(PenaltiesRoundMapper.toEntity(match.getPenaltiesRound()));
+            entity.setPenaltiesRound(savePenaltiesRound(match.getPenaltiesRound()));
         }
 
         try {
@@ -130,6 +143,15 @@ public class MatchServiceAdminImpl implements MatchService {
             log.error("Error al eliminar partido con id '{}': {}", id, e.getMessage());
             throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar partido");
         }
+    }
+
+    private WCPenaltiesRound savePenaltiesRound(PenaltiesRoundDTO penaltiesRound) {
+        var penaltiesRoundEntity = PenaltiesRoundMapper.toEntity(penaltiesRound);
+        var homeTeamPenalties = penaltyRepository.saveAllAndFlush(penaltiesRoundEntity.getHomeTeamPenalties());
+        var awayTeamPenalties = penaltyRepository.saveAllAndFlush(penaltiesRoundEntity.getAwayTeamPenalties());
+        penaltiesRoundEntity.setHomeTeamPenalties(homeTeamPenalties);
+        penaltiesRoundEntity.setAwayTeamPenalties(awayTeamPenalties);
+        return penaltiesRoundRepository.save(penaltiesRoundEntity);
     }
 
 }

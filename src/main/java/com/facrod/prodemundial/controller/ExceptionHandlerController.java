@@ -47,4 +47,6 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(BAD_REQUEST).body(error);
     }
 
+    // TODO: 6/4/22 agregar exception handler para HttpMediaTypeNotSupportedException? 
+
 }

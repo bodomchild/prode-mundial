@@ -29,6 +29,10 @@ public final class MatchMapper {
             dto.setResult(MatchResult.getMatchResult(match));
         }
 
+        if (match.isPenalties()) {
+            dto.setPenaltiesRound(PenaltiesRoundMapper.toDto(match.getPenaltiesRound()));
+        }
+
         return dto;
     }
 
