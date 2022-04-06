@@ -3,6 +3,7 @@ package com.facrod.prodemundial.service.impl;
 import com.facrod.prodemundial.dto.MatchDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.mapper.MatchMapper;
+import com.facrod.prodemundial.mapper.PenaltiesRoundMapper;
 import com.facrod.prodemundial.repository.MatchRepository;
 import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.MatchService;
@@ -45,16 +46,14 @@ public class MatchServiceAdminImpl implements MatchService {
         }
 
         var entity = MatchMapper.toEntity(match);
-        var homeTeam = teamRepository.findById(match.getHomeTeamId())
-                .orElseThrow(() -> {
-                    log.error("Error al crear partido con id '{}': equipo local con id '{}' no encontrado", match.getId(), match.getHomeTeamId());
-                    return new AppException(HttpStatus.NOT_FOUND, "Equipo local '" + match.getHomeTeamId() + "' no encontrado");
-                });
-        var awayTeam = teamRepository.findById(match.getAwayTeamId())
-                .orElseThrow(() -> {
-                    log.error("Error al crear partido con id '{}': equipo visitante con id '{}' no encontrado", match.getId(), match.getAwayTeamId());
-                    return new AppException(HttpStatus.NOT_FOUND, "Equipo visitante '" + match.getAwayTeamId() + "' no encontrado");
-                });
+        var homeTeam = teamRepository.findById(match.getHomeTeamId()).orElseThrow(() -> {
+            log.error("Error al crear partido con id '{}': equipo local con id '{}' no encontrado", match.getId(), match.getHomeTeamId());
+            return new AppException(HttpStatus.NOT_FOUND, "Equipo local '" + match.getHomeTeamId() + "' no encontrado");
+        });
+        var awayTeam = teamRepository.findById(match.getAwayTeamId()).orElseThrow(() -> {
+            log.error("Error al crear partido con id '{}': equipo visitante con id '{}' no encontrado", match.getId(), match.getAwayTeamId());
+            return new AppException(HttpStatus.NOT_FOUND, "Equipo visitante '" + match.getAwayTeamId() + "' no encontrado");
+        });
         entity.setHomeTeam(homeTeam);
         entity.setAwayTeam(awayTeam);
 
@@ -70,9 +69,51 @@ public class MatchServiceAdminImpl implements MatchService {
     }
 
     @Override
-    public MatchDTO updateMatch(MatchDTO match) throws AppException {
-        // TODO: 4/4/22 implementar
-        throw new AppException(HttpStatus.NOT_IMPLEMENTED, "No implementado");
+    public void updateMatchResult(MatchDTO match) throws AppException {
+        var entity = matchRepository.findById(match.getId()).orElseThrow(() -> {
+            log.error("Error al actualizar partido con id '{}': no existe", match.getId());
+            return new AppException(HttpStatus.NOT_FOUND, "Partido no encontrado");
+        });
+
+        entity.setFinished(true);
+        entity.setHomeScore(match.getHomeScore());
+        entity.setAwayScore(match.getAwayScore());
+
+        if (match.isExtraTime()) {
+            entity.setExtraTime(match.isExtraTime());
+            entity.setExtraTimeHomeScore(match.getExtraTimeHomeScore());
+            entity.setExtraTimeAwayScore(match.getExtraTimeAwayScore());
+        }
+
+        if (match.isPenalties()) {
+            entity.setPenalties(match.isPenalties());
+            entity.setPenaltiesRound(PenaltiesRoundMapper.toEntity(match.getPenaltiesRound()));
+        }
+
+        try {
+            log.info("Actualizando partido: {}", gson.toJson(entity));
+            matchRepository.save(entity);
+        } catch (Exception e) {
+            log.error("Error al actualizar partido: {}", e.getMessage());
+            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar partido");
+        }
+    }
+
+    @Override
+    public void updateMatchStartTime(MatchDTO match) throws AppException {
+        var entity = matchRepository.findById(match.getId()).orElseThrow(() -> {
+            log.error("Error al actualizar horario del partido con id '{}': no existe", match.getId());
+            return new AppException(HttpStatus.NOT_FOUND, "Partido no encontrado");
+        });
+
+        entity.setStartTime(match.getStartTime());
+        try {
+            log.info("Actualizando horario del partido: {}", gson.toJson(entity));
+            matchRepository.save(entity);
+        } catch (Exception e) {
+            log.error("Error al actualizar horario del partido: {}", e.getMessage());
+            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar horario del partido");
+        }
     }
 
     @Override

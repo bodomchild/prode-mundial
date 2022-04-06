@@ -51,6 +51,9 @@ public class MatchDTO {
     private int extraTimeHomeScore;
     private int extraTimeAwayScore;
     private boolean penalties;
+    private PenaltiesRoundDTO penaltiesRound;
+
+    // TODO: 5/4/22 agregar penales
 
     @Getter
     @Builder

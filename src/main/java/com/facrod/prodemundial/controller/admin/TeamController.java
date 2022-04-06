@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 
 @RestController("teamAdminController")
-@RequestMapping("/api/v1/admin/team")
+@RequestMapping("/api/v1/admin/teams")
 public class TeamController {
 
     private final TeamService teamService;

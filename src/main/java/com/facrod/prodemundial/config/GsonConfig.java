@@ -26,17 +26,16 @@ public class GsonConfig {
 
     private static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
 
+        private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         @Override
         public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
-            jsonWriter.value(localDateTime.toString().replace("T", " "));
+            jsonWriter.value(localDateTime.format(DATE_TIME_FORMATTER));
         }
 
         @Override
         public LocalDateTime read(JsonReader jsonReader) throws IOException {
-            // no se va a usar, pero se debe implementar
-            var dateString = jsonReader.nextString();
-            var dfm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            return LocalDateTime.parse(dateString, dfm);
+            return LocalDateTime.parse(jsonReader.nextString(), DATE_TIME_FORMATTER);
         }
 
     }

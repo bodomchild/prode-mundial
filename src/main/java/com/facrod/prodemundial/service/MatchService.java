@@ -16,7 +16,11 @@ public interface MatchService {
         throw new OperationNotAllowedException();
     }
 
-    default MatchDTO updateMatch(MatchDTO match) throws AppException {
+    default void updateMatchResult(MatchDTO match) throws AppException {
+        throw new OperationNotAllowedException();
+    }
+
+    default void updateMatchStartTime(MatchDTO match) throws AppException {
         throw new OperationNotAllowedException();
     }
 
