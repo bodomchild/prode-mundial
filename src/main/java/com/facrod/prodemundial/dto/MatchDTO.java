@@ -24,7 +24,7 @@ public class MatchDTO {
 
     @NotNull(message = "El id del partido es obligatorio")
     @Positive(message = "El id del partido no puede ser negativo")
-    @Max(value = 40, message = "El id del partido no puede ser mayor que 40")
+    @Max(value = 64, message = "El id del partido no puede ser mayor que 64")
     private Long id;
 
     @Future(message = "La fecha del partido debe ser posterior a la fecha actual")
