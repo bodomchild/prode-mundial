@@ -4,13 +4,15 @@ import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -47,6 +49,20 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(BAD_REQUEST).body(error);
     }
 
-    // TODO: 6/4/22 agregar exception handler para HttpMediaTypeNotSupportedException? 
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorDTO> httpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException e) {
+        var error = new ErrorDTO();
+        error.setStatus(UNSUPPORTED_MEDIA_TYPE.getReasonPhrase());
+        error.setError("Content-Type '" + e.getContentType() + "' no soportado. Esperado: '" + e.getSupportedMediaTypes() + "'");
+        return ResponseEntity.status(UNSUPPORTED_MEDIA_TYPE).body(error);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorDTO> noHandlerFoundExceptionHandler(NoHandlerFoundException e) {
+        var error = new ErrorDTO();
+        error.setStatus(NOT_FOUND.getReasonPhrase());
+        error.setError("No se encontro el recurso '" + e.getRequestURL() + "'");
+        return ResponseEntity.status(NOT_FOUND).body(error);
+    }
 
 }
