@@ -1,6 +1,5 @@
 package com.facrod.prodemundial.entity;
 
-import com.facrod.prodemundial.mapper.PenaltiesRoundMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,11 +28,11 @@ public class WCPenaltiesRound {
 
     private int awayTeamScore;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @ToString.Exclude
     private List<WCPenalty> homeTeamPenalties;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @ToString.Exclude
     private List<WCPenalty> awayTeamPenalties;
 

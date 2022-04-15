@@ -1,6 +1,6 @@
 package com.facrod.prodemundial.controller;
 
-import com.facrod.prodemundial.dto.MatchDTO;
+import com.facrod.prodemundial.dto.MatchResponseDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.service.MatchService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class MatchController {
     private final MatchService matchService;
 
     @GetMapping
-    public ResponseEntity<List<MatchDTO>> getAll() {
+    public ResponseEntity<List<MatchResponseDTO>> getAll() {
         return ResponseEntity.ok(matchService.getMatches());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MatchDTO> findById(@PathVariable("id") Long id) throws AppException {
+    public ResponseEntity<MatchResponseDTO> findById(@PathVariable("id") Long id) throws AppException {
         return ResponseEntity.ok(matchService.getMatch(id));
     }
 

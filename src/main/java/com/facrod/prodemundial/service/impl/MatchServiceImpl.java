@@ -1,6 +1,6 @@
 package com.facrod.prodemundial.service.impl;
 
-import com.facrod.prodemundial.dto.MatchDTO;
+import com.facrod.prodemundial.dto.MatchResponseDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.mapper.MatchMapper;
 import com.facrod.prodemundial.repository.MatchRepository;
@@ -22,17 +22,17 @@ public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
 
     @Override
-    public MatchDTO getMatch(Long id) throws AppException {
+    public MatchResponseDTO getMatch(Long id) throws AppException {
         var match = matchRepository.findById(id).orElseThrow(() -> {
             log.error("Error al buscar partido con id '{}'", id);
             return new AppException(HttpStatus.NOT_FOUND, "Partido no encontrado");
         });
-        return MatchMapper.toDto(match);
+        return MatchMapper.toMatchResponseDto(match);
     }
 
     @Override
-    public List<MatchDTO> getMatches() {
-        return MatchMapper.toDto(matchRepository.findAll());
+    public List<MatchResponseDTO> getMatches() {
+        return MatchMapper.toMatchResponseDto(matchRepository.findAll());
     }
 
 }

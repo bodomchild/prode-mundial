@@ -1,6 +1,9 @@
 package com.facrod.prodemundial.service;
 
-import com.facrod.prodemundial.dto.MatchDTO;
+import com.facrod.prodemundial.dto.MatchCreateDTO;
+import com.facrod.prodemundial.dto.MatchResponseDTO;
+import com.facrod.prodemundial.dto.MatchUpdateResultDTO;
+import com.facrod.prodemundial.dto.MatchUpdateStartTimeDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.exceptions.OperationNotAllowedException;
 
@@ -8,19 +11,19 @@ import java.util.List;
 
 public interface MatchService {
 
-    MatchDTO getMatch(Long id) throws AppException;
+    MatchResponseDTO getMatch(Long id) throws AppException;
 
-    List<MatchDTO> getMatches();
+    List<MatchResponseDTO> getMatches();
 
-    default MatchDTO createMatch(MatchDTO match) throws AppException {
+    default MatchResponseDTO createMatch(MatchCreateDTO match) throws AppException {
         throw new OperationNotAllowedException();
     }
 
-    default void updateMatchResult(MatchDTO match) throws AppException {
+    default void updateMatchResult(MatchUpdateResultDTO match) throws AppException {
         throw new OperationNotAllowedException();
     }
 
-    default void updateMatchStartTime(MatchDTO match) throws AppException {
+    default void updateMatchStartTime(MatchUpdateStartTimeDTO match) throws AppException {
         throw new OperationNotAllowedException();
     }
 

@@ -43,7 +43,7 @@ public class WCMatch {
 
     private boolean penalties;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     private WCPenaltiesRound penaltiesRound;
 
     @Override

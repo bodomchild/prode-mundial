@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
@@ -27,16 +28,29 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDTO> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
-        var fieldErrors = e.getFieldErrors().stream().map(err -> {
-            var fieldError = new ErrorDTO.FieldError();
-            fieldError.setField(err.getField());
-            fieldError.setMessage(err.getDefaultMessage());
-            return fieldError;
-        }).collect(Collectors.toList());
-
         var error = new ErrorDTO();
         error.setStatus(BAD_REQUEST.getReasonPhrase());
-        error.setErrors(fieldErrors);
+        error.setErrors(new ArrayList<>());
+
+        if (e.getGlobalErrorCount() > 0) {
+            var globalErrors = e.getGlobalErrors().stream().map(err -> {
+                var globalError = new ErrorDTO.FieldError();
+                globalError.setField(err.getObjectName());
+                globalError.setMessage(err.getDefaultMessage());
+                return globalError;
+            }).collect(Collectors.toList());
+            error.getErrors().addAll(globalErrors);
+        }
+
+        if (e.getFieldErrorCount() > 0) {
+            var fieldErrors = e.getFieldErrors().stream().map(err -> {
+                var fieldError = new ErrorDTO.FieldError();
+                fieldError.setField(err.getField());
+                fieldError.setMessage(err.getDefaultMessage());
+                return fieldError;
+            }).collect(Collectors.toList());
+            error.getErrors().addAll(fieldErrors);
+        }
 
         return ResponseEntity.status(BAD_REQUEST).body(error);
     }
@@ -63,6 +77,14 @@ public class ExceptionHandlerController {
         error.setStatus(NOT_FOUND.getReasonPhrase());
         error.setError("No se encontro el recurso '" + e.getRequestURL() + "'");
         return ResponseEntity.status(NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDTO> exceptionHandler(Exception e) {
+        var error = new ErrorDTO();
+        error.setStatus(INTERNAL_SERVER_ERROR.getReasonPhrase());
+        error.setError(e.getMessage());
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(error);
     }
 
 }
