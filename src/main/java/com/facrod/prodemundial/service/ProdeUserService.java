@@ -10,4 +10,6 @@ public interface ProdeUserService {
 
     String signIn(SignInDTO user) throws AppException;
 
+    SignUpDTO signUpAdmin(SignUpDTO user) throws AppException;
+
 }

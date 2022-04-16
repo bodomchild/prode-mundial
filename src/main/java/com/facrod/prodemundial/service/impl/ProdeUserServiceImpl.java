@@ -27,18 +27,11 @@ public class ProdeUserServiceImpl implements ProdeUserService {
     private final PasswordEncoder passwordEncoder;
     private final ProdeUserRepository prodeUserRepository;
 
+    private static final String PASSWORD_NOT_MATCH = "Las contraseñas no coinciden";
+
     @Override
     public SignUpDTO signUp(SignUpDTO user) throws AppException {
-        if (prodeUserRepository.existsByUsername(user.getUsername())) {
-            log.error("El usuario ya existe: {}", user.getUsername());
-            throw new AppException(HttpStatus.CONFLICT, "El usuario ya existe");
-        }
-
-        var prodeUser = new ProdeUser();
-        prodeUser.setUsername(user.getUsername());
-        prodeUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        prodeUser.setEmail(user.getEmail());
-        prodeUser.setName(user.getName());
+        var prodeUser = checkAndSetUser(user);
         prodeUser.setRole("USER");
 
         try {
@@ -69,6 +62,50 @@ public class ProdeUserServiceImpl implements ProdeUserService {
             log.error("Error al autenticar usuario: {}", user.getUsername());
             throw new AppException(HttpStatus.UNAUTHORIZED, "Error al autenticar usuario");
         }
+    }
+
+    @Override
+    public SignUpDTO signUpAdmin(SignUpDTO user) throws AppException {
+        var prodeAdmin = checkAndSetUser(user);
+        prodeAdmin.setRole("ADMIN");
+
+        try {
+            log.info("Creando admin: {}", gson.toJson(prodeAdmin));
+            prodeAdmin = prodeUserRepository.save(prodeAdmin);
+        } catch (Exception e) {
+            log.error("Error al crear admin: {}", gson.toJson(prodeAdmin));
+            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear admin");
+        }
+
+        user.setId(prodeAdmin.getId());
+        user.setPassword(null);
+        user.setConfirmPassword(null);
+        return user;
+    }
+
+
+    private ProdeUser checkAndSetUser(SignUpDTO user) throws AppException {
+        if (prodeUserRepository.existsByUsername(user.getUsername())) {
+            log.error("El usuario ya existe: {}", user.getUsername());
+            throw new AppException(HttpStatus.CONFLICT, "El usuario ya existe");
+        }
+
+        var prodeUser = new ProdeUser();
+        prodeUser.setUsername(user.getUsername());
+
+        if (!validatePassword(user.getPassword(), user.getConfirmPassword())) {
+            log.error(PASSWORD_NOT_MATCH);
+            throw new AppException(HttpStatus.BAD_REQUEST, PASSWORD_NOT_MATCH);
+        }
+
+        prodeUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        prodeUser.setEmail(user.getEmail());
+        prodeUser.setName(user.getName());
+        return prodeUser;
+    }
+
+    private boolean validatePassword(String password, String confirmPassword) {
+        return password.equals(confirmPassword);
     }
 
 }

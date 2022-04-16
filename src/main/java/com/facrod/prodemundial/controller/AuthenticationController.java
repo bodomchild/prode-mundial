@@ -8,6 +8,7 @@ import com.facrod.prodemundial.service.ProdeUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,12 @@ public class AuthenticationController {
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpDTO> signUp(@RequestBody SignUpDTO signUpCredentials) throws AppException {
         return ResponseEntity.status(HttpStatus.CREATED).body(prodeUserService.signUp(signUpCredentials));
+    }
+
+    @PostMapping("/sign-up/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SignUpDTO> signUpAdmin(@RequestBody SignUpDTO signUpCredentials) throws AppException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(prodeUserService.signUpAdmin(signUpCredentials));
     }
 
 }
