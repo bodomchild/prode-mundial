@@ -23,8 +23,6 @@ public class AuthenticationController {
 
     private final ProdeUserService prodeUserService;
 
-    // TODO: 15/4/22 agregar validaciones a los dtos
-
     @PostMapping("/sign-in")
     public ResponseEntity<TokenDTO> signIn(@RequestBody @Valid SignInDTO signInCredentials) throws AppException {
         var token = TokenDTO.builder().token(prodeUserService.signIn(signInCredentials)).build();
