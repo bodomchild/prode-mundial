@@ -4,6 +4,7 @@ import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -77,6 +78,12 @@ public class ExceptionHandlerController {
         error.setStatus(NOT_FOUND.getReasonPhrase());
         error.setError("No se encontro el recurso '" + e.getRequestURL() + "'");
         return ResponseEntity.status(NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public void accessDeniedExceptionHandler(AccessDeniedException e) {
+        // Se relanza la excepcion para que el error sea manejado por el CustomAccessDeniedHandler
+        throw e;
     }
 
     @ExceptionHandler(Exception.class)
