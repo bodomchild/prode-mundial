@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class OperationNotAllowedException extends AppException {
 
     public OperationNotAllowedException() {
-        super(HttpStatus.FORBIDDEN, "Operation not allowed");
+        super(HttpStatus.FORBIDDEN, "Operación no autorizada.");
     }
 
 }

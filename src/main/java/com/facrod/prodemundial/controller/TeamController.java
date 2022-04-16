@@ -37,7 +37,7 @@ public class TeamController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TeamDTO> createTeam(@RequestBody @Valid TeamDTO team) throws AppException {
-        var createdTeam = teamService.createTeam(team);
+        var createdTeam = teamServiceAdmin.createTeam(team);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build(createdTeam.getId());
         return ResponseEntity.created(uri).body(createdTeam);
     }
@@ -45,7 +45,7 @@ public class TeamController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTeam(@PathVariable("id") String id) throws AppException {
-        teamService.deleteTeam(id);
+        teamServiceAdmin.deleteTeam(id);
         return ResponseEntity.noContent().build();
     }
 
