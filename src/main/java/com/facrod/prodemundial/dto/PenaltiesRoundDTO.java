@@ -3,6 +3,7 @@ package com.facrod.prodemundial.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PenaltiesRoundDTO {
@@ -36,6 +38,7 @@ public class PenaltiesRoundDTO {
 
     @Getter
     @Setter
+    @EqualsAndHashCode
     public static class Penalty {
         @PositiveOrZero(message = "La cantidad de goles debe ser mayor o igual a 0")
         private int order;

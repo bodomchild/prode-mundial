@@ -4,7 +4,6 @@ import com.facrod.prodemundial.dto.MatchCreateDTO;
 import com.facrod.prodemundial.dto.MatchResponseDTO;
 import com.facrod.prodemundial.entity.WCMatch;
 import com.facrod.prodemundial.enums.MatchResult;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,15 +18,9 @@ public final class MatchMapper {
         dto.setId(match.getId());
         dto.setStartTime(match.getStartTime());
 
-        dto.setHomeTeam(MatchResponseDTO.TeamDTO.builder()
-                .id(match.getHomeTeam().getId())
-                .name(match.getHomeTeam().getName())
-                .build());
+        dto.setHomeTeam(MatchResponseDTO.TeamDTO.builder().id(match.getHomeTeam().getId()).name(match.getHomeTeam().getName()).build());
 
-        dto.setAwayTeam(MatchResponseDTO.TeamDTO.builder()
-                .id(match.getAwayTeam().getId())
-                .name(match.getAwayTeam().getName())
-                .build());
+        dto.setAwayTeam(MatchResponseDTO.TeamDTO.builder().id(match.getAwayTeam().getId()).name(match.getAwayTeam().getName()).build());
 
         if (match.isFinished()) {
             dto.setFinished(match.isFinished());
@@ -39,9 +32,9 @@ public final class MatchMapper {
                 dto.setExtraTime(match.isExtraTime());
                 dto.setExtraTimeHomeScore(match.getExtraTimeHomeScore());
                 dto.setExtraTimeAwayScore(match.getExtraTimeAwayScore());
-                dto.setPenalties(match.isPenalties());
 
                 if (match.isPenalties()) {
+                    dto.setPenalties(match.isPenalties());
                     dto.setPenaltiesRound(PenaltiesRoundMapper.toDto(match.getPenaltiesRound()));
                 }
             }
@@ -53,7 +46,8 @@ public final class MatchMapper {
 
     public static WCMatch matchCreateDtoToEntity(MatchCreateDTO match) {
         var entity = new WCMatch();
-        BeanUtils.copyProperties(match, entity, "homeTeam", "awayTeam");
+        entity.setId(match.getId());
+        entity.setStartTime(match.getStartTime());
         return entity;
     }
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -32,7 +33,7 @@ public class TeamDTO {
     private int losses;
     private int playedGames;
     @NotBlank(message = "El grupo del equipo es obligatorio")
-    @Pattern(regexp = "[A-Z]{1}", message = "El grupo del equipo debe tener 1 letra mayúscula")
+    @Pattern(regexp = "[A-Z]", message = "El grupo del equipo debe tener 1 letra mayúscula")
     private String group;
 
 }
