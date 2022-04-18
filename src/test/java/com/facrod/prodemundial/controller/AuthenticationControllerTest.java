@@ -1,6 +1,7 @@
 package com.facrod.prodemundial.controller;
 
 import com.facrod.prodemundial.dto.SignInDTO;
+import com.facrod.prodemundial.dto.SignUpDTO;
 import com.facrod.prodemundial.dto.TokenDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.service.ProdeUserService;
@@ -29,44 +30,110 @@ class AuthenticationControllerTest {
 
     @Test
     void signIn_ok() throws AppException {
-        var dto = new SignInDTO();
-        dto.setUsername("user");
-        dto.setPassword("pass");
-
-        when(service.signIn(dto)).thenReturn("token");
+        var requestBody = new SignInDTO();
+        requestBody.setUsername("user");
+        requestBody.setPassword("pass");
 
         var expectedToken = TokenDTO.builder().token("token").build();
         var expected = ResponseEntity.ok(expectedToken);
 
-        var actual = controller.signIn(dto);
+        when(service.signIn(requestBody)).thenReturn("token");
+
+        var actual = controller.signIn(requestBody);
 
         assertNotNull(actual);
         assertNotNull(actual.getBody());
-        assertEquals(expected.getBody().getToken(), actual.getBody().getToken());
+        assertEquals(expected.getBody(), actual.getBody());
     }
 
     @Test
-    void signIn_unauthorized() throws AppException {
-        var dto = new SignInDTO();
-        dto.setUsername("user");
-        dto.setPassword("pass");
+    void signIn_error() throws AppException {
+        var requestBody = new SignInDTO();
+        requestBody.setUsername("user");
+        requestBody.setPassword("pass");
 
         var expected = new AppException(HttpStatus.UNAUTHORIZED, "Error al autenticar usuario");
 
-        when(service.signIn(dto)).thenThrow(expected);
+        when(service.signIn(requestBody)).thenThrow(expected);
 
-        var actual = assertThrows(AppException.class, () -> controller.signIn(dto));
+        var actual = assertThrows(AppException.class, () -> controller.signIn(requestBody));
 
         assertNotNull(actual);
         assertEquals(expected, actual);
     }
 
     @Test
-    void signUp() {
+    void signUp_ok() throws AppException {
+        var requestBody = createSignUpDTO();
+        var responseBody = createSignUpDTO();
+        responseBody.setId("id");
+        responseBody.setPassword(null);
+        responseBody.setConfirmPassword(null);
+
+        var expected = ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+
+        when(service.signUp(requestBody)).thenReturn(responseBody);
+
+        var actual = controller.signUp(requestBody);
+
+        assertNotNull(actual);
+        assertNotNull(actual.getBody());
+        assertEquals(expected.getBody(), actual.getBody());
     }
 
     @Test
-    void signUpAdmin() {
+    void signUp_error() throws AppException {
+        var requestBody = createSignUpDTO();
+        var expected = new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear usuario");
+
+        when(service.signUp(requestBody)).thenThrow(expected);
+
+        var actual = assertThrows(AppException.class, () -> controller.signUp(requestBody));
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void signUpAdmin() throws AppException {
+        var requestBody = createSignUpDTO();
+        var responseBody = createSignUpDTO();
+        responseBody.setId("id");
+        responseBody.setPassword(null);
+        responseBody.setConfirmPassword(null);
+
+        var expected = ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+
+        when(service.signUpAdmin(requestBody)).thenReturn(responseBody);
+
+        var actual = controller.signUpAdmin(requestBody);
+
+        assertNotNull(actual);
+        assertNotNull(actual.getBody());
+        assertEquals(expected.getBody(), actual.getBody());
+    }
+
+    @Test
+    void signUpAdmin_error() throws AppException {
+        var requestBody = createSignUpDTO();
+        var expected = new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear admin");
+
+        when(service.signUpAdmin(requestBody)).thenThrow(expected);
+
+        var actual = assertThrows(AppException.class, () -> controller.signUpAdmin(requestBody));
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+
+    private SignUpDTO createSignUpDTO() {
+        var dto = new SignUpDTO();
+        dto.setUsername("user");
+        dto.setEmail("email");
+        dto.setName("name");
+        dto.setPassword("pass");
+        dto.setConfirmPassword("pass");
+        return dto;
     }
 
 }

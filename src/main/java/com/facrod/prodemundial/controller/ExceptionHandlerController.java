@@ -76,7 +76,7 @@ public class ExceptionHandlerController {
     public ResponseEntity<ErrorDTO> noHandlerFoundExceptionHandler(NoHandlerFoundException e) {
         var error = new ErrorDTO();
         error.setStatus(NOT_FOUND.getReasonPhrase());
-        error.setError("No se encontro el recurso '" + e.getRequestURL() + "'");
+        error.setError("No se encontró el recurso '" + e.getRequestURL() + "'");
         return ResponseEntity.status(NOT_FOUND).body(error);
     }
 
