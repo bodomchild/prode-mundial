@@ -25,7 +25,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     private final Gson gson;
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             log.warn("El usuario {} intentó acceder a un recurso restringido", auth.getName());

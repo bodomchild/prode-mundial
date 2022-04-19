@@ -93,7 +93,7 @@ public class ProdeUserServiceImpl implements ProdeUserService {
         var prodeUser = new ProdeUser();
         prodeUser.setUsername(user.getUsername());
 
-        if (!validatePassword(user.getPassword(), user.getConfirmPassword())) {
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
             log.error(PASSWORD_NOT_MATCH);
             throw new AppException(HttpStatus.BAD_REQUEST, PASSWORD_NOT_MATCH);
         }
@@ -102,10 +102,6 @@ public class ProdeUserServiceImpl implements ProdeUserService {
         prodeUser.setEmail(user.getEmail());
         prodeUser.setName(user.getName());
         return prodeUser;
-    }
-
-    private boolean validatePassword(String password, String confirmPassword) {
-        return password.equals(confirmPassword);
     }
 
 }

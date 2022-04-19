@@ -25,6 +25,7 @@
             **/dto/**,
             **/entity/**,
             **/exceptions/**,
+            **/security/**,
             **/ProdeMundialApplication.java
         </sonar.coverage.exclusions>
     </properties>
@@ -111,6 +112,7 @@
                         <exclude>**/dto/**</exclude>
                         <exclude>**/entity/**</exclude>
                         <exclude>**/exceptions/**</exclude>
+                        <exclude>**/security/**</exclude>
                     </excludes>
                 </configuration>
 
