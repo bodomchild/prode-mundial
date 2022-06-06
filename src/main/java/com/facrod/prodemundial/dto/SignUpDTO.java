@@ -12,6 +12,7 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -38,10 +39,12 @@ public class SignUpDTO {
 
     @NotNull(message = "Debe ingresar la contraseña")
     @Pattern(regexp = "^[a-zA-Z\\d$.?!#]*$", message = "La contraseña solo puede contener letras, números y los caracteres especiales $.?!#")
+    @Size(min = 6, max = 16, message = "La contraseña debe tener entre 6 y 16 caracteres")
     private String password;
 
     @NotNull(message = "Debe ingresar la confirmación de contraseña")
     @Pattern(regexp = "^[a-zA-Z\\d$.?!#]*$", message = "La contraseña solo puede contener letras, números y los caracteres especiales $.?!#")
+    @Size(min = 6, max = 16, message = "La contraseña debe tener entre 6 y 16 caracteres")
     private String confirmPassword;
 
 }

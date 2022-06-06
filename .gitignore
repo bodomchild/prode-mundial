@@ -34,3 +34,5 @@ build/
 
 todos.txt
 sonar.bat
+prode.sql
+.env

@@ -16,3 +16,8 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
   issuer: ${JWT_ISSUER}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

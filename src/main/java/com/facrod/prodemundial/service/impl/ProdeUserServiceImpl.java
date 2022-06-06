@@ -21,13 +21,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProdeUserServiceImpl implements ProdeUserService {
 
+    private static final String PASSWORD_NOT_MATCH = "Las contraseñas no coinciden";
     private final AuthenticationManager authenticationManager;
     private final Gson gson;
     private final JWTUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final ProdeUserRepository prodeUserRepository;
-
-    private static final String PASSWORD_NOT_MATCH = "Las contraseñas no coinciden";
 
     @Override
     public SignUpDTO signUp(SignUpDTO user) throws AppException {

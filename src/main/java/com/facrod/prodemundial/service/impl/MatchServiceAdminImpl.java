@@ -25,11 +25,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MatchServiceAdminImpl implements MatchService {
 
+    private static final String MATCH_NOT_FOUND = "Partido no encontrado";
     private final Gson gson;
     private final MatchRepository matchRepository;
     private final TeamRepository teamRepository;
-
-    private static final String MATCH_NOT_FOUND = "Partido no encontrado";
 
     @Override
     public MatchResponseDTO getMatch(Long id) throws AppException {
