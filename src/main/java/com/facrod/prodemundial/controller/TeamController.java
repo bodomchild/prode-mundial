@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/teams")
+@RequestMapping("/teams")
 @CrossOrigin(origins = "http://localhost:3000")
 public class TeamController {
 

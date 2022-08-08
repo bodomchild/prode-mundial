@@ -126,10 +126,12 @@ public class MatchServiceAdminImpl implements MatchService {
             throw new AppException(HttpStatus.CONFLICT, "El partido ya se jugó");
         }
 
+        log.info("Actualizando horario del partido: {}", gson.toJson(entity));
         entity.setStartTime(match.getStartTime());
+
         try {
-            log.info("Actualizando horario del partido: {}", gson.toJson(entity));
             matchRepository.save(entity);
+            log.info("Horario del partido actualizado: {}", gson.toJson(entity));
         } catch (Exception e) {
             log.error("Error al actualizar horario del partido: {}", e.getMessage());
             throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar horario del partido");
