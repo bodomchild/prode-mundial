@@ -20,6 +20,4 @@ public interface TeamService {
         throw new OperationNotAllowedException();
     }
 
-    // TODO: 1/4/22 agregar operaciones de equipo (sumar puntos, goles, etc.)
-
 }

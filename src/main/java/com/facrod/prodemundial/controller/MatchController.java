@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/matches")
+@RequestMapping("/matches")
 @CrossOrigin(origins = "http://localhost:3000")
 public class MatchController {
 

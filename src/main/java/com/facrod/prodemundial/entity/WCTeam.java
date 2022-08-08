@@ -1,15 +1,11 @@
 package com.facrod.prodemundial.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,9 +16,7 @@ import java.util.Objects;
 @Table(name = "world_cup_team", uniqueConstraints = {
         @UniqueConstraint(name = "uk_team_name", columnNames = "name")
 })
-public class WCTeam {
-
-    // TODO: 1/4/22 agregar jugadores y tarjetas
+public class WCTeam implements Serializable {
 
     @Id
     private String id;
@@ -46,6 +40,12 @@ public class WCTeam {
     private int playedGames;
 
     private String worldCupGroup;
+
+    @OneToMany
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "teamId", referencedColumnName = "id")
+    @ToString.Exclude
+    private List<Player> players;
 
     @Override
     public boolean equals(Object o) {
