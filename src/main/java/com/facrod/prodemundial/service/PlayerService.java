@@ -6,7 +6,7 @@ import com.facrod.prodemundial.dto.PlayerResponseDTO;
 import com.facrod.prodemundial.dto.PlayerUpdateDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.exceptions.OperationNotAllowedException;
-import org.springframework.data.domain.Page;
+import com.facrod.prodemundial.pagination.Page;
 
 public interface PlayerService {
 

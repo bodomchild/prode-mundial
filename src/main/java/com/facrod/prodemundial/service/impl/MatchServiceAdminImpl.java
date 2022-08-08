@@ -26,6 +26,7 @@ import java.util.List;
 public class MatchServiceAdminImpl implements MatchService {
 
     private static final String MATCH_NOT_FOUND = "Partido no encontrado";
+
     private final Gson gson;
     private final MatchRepository matchRepository;
     private final TeamRepository teamRepository;

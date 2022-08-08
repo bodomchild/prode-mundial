@@ -4,7 +4,10 @@ import com.facrod.prodemundial.dto.PlayerCreateDTO;
 import com.facrod.prodemundial.dto.PlayerResponseDTO;
 import com.facrod.prodemundial.entity.Player;
 
-public class PlayerMapper {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public final class PlayerMapper {
 
     private PlayerMapper() {
     }
@@ -28,6 +31,10 @@ public class PlayerMapper {
         dto.setYellowCards(player.getYellowCards());
         dto.setRedCards(player.getRedCards());
         return dto;
+    }
+
+    public static List<PlayerResponseDTO> toDto(List<Player> players) {
+        return players.stream().map(PlayerMapper::toDto).collect(Collectors.toList());
     }
 
 }

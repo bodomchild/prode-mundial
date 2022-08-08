@@ -7,16 +7,17 @@ import com.facrod.prodemundial.dto.PlayerUpdateDTO;
 import com.facrod.prodemundial.entity.Player;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.mapper.PlayerMapper;
+import com.facrod.prodemundial.pagination.Page;
 import com.facrod.prodemundial.repository.PlayerRepository;
 import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.PlayerService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Objects;
 
 @Slf4j
@@ -33,7 +34,10 @@ public class PlayerServiceAdminImpl implements PlayerService {
     @Override
     public Page<PlayerResponseDTO> getPlayers(String sortBy, int page) {
         // Nunca se va a llamar a este método
-        return Page.empty();
+        return Page.<PlayerResponseDTO>builder()
+                .data(Collections.emptyList())
+                .sort(sortBy)
+                .build();
     }
 
     @Override
