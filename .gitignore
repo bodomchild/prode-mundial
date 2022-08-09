@@ -34,5 +34,6 @@ build/
 
 todos.txt
 sonar.bat
+run.bat
 prode.sql
 .env
