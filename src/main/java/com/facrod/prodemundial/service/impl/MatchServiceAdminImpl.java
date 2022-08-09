@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,17 +33,15 @@ public class MatchServiceAdminImpl implements MatchService {
     private final TeamRepository teamRepository;
 
     @Override
-    public MatchResponseDTO getMatch(Long id) throws AppException {
-        var match = matchRepository.findById(id).orElseThrow(() -> {
-            log.error("Error al buscar partido con id '{}'", id);
-            return new AppException(HttpStatus.NOT_FOUND, MATCH_NOT_FOUND);
-        });
-        return MatchMapper.toMatchResponseDto(match);
+    public MatchResponseDTO getMatch(Long id) {
+        // Nunca se va a llamar a este método
+        return null;
     }
 
     @Override
     public List<MatchResponseDTO> getMatches() {
-        return MatchMapper.toMatchResponseDto(matchRepository.findAll());
+        // Nunca se va a llamar a este método
+        return new ArrayList<>();
     }
 
     @Override

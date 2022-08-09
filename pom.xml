@@ -12,7 +12,7 @@
 
     <groupId>com.facrod</groupId>
     <artifactId>prode-mundial</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>prode-mundial</name>
     <description>prode-mundial</description>
 
@@ -25,6 +25,7 @@
             **/dto/**,
             **/entity/**,
             **/exceptions/**,
+            **/pagination/**,
             **/security/**,
             **/ProdeMundialApplication.java
         </sonar.coverage.exclusions>
@@ -116,7 +117,9 @@
                         <exclude>**/dto/**</exclude>
                         <exclude>**/entity/**</exclude>
                         <exclude>**/exceptions/**</exclude>
+                        <exclude>**/pagination/**</exclude>
                         <exclude>**/security/**</exclude>
+                        <exclude>**/ProdeMundialApplication.java</exclude>
                     </excludes>
                 </configuration>
 

@@ -43,7 +43,7 @@ public class WCTeam implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "id", referencedColumnName = "id")
-    @JoinColumn(name = "teamId", referencedColumnName = "id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     @ToString.Exclude
     private List<Player> players;
 

@@ -17,6 +17,7 @@ public final class PlayerMapper {
         entity.setId(player.getId());
         entity.setTeamId(player.getTeamId());
         entity.setName(player.getName());
+        entity.setPosition(player.getPosition());
         entity.setAge(player.getAge());
         return entity;
     }
@@ -26,6 +27,7 @@ public final class PlayerMapper {
         dto.setId(player.getId());
         dto.setTeamId(player.getTeamId());
         dto.setName(player.getName());
+        dto.setPosition(player.getPosition());
         dto.setAge(player.getAge());
         dto.setGoals(player.getGoals());
         dto.setYellowCards(player.getYellowCards());

@@ -26,6 +26,10 @@ public class PlayerCreateDTO {
     @NotBlank(message = "El nombre del jugador es obligatorio")
     private String name;
 
+    @NotBlank(message = "La posición del jugador es obligatoria")
+    @Pattern(regexp = "GK|DF|MF|FW", message = "La posición del jugador debe ser GK, DF, MF o FW")
+    private String position;
+
     @NotNull(message = "La edad del jugador es obligatoria")
     @Positive(message = "La edad del jugador debe ser positiva")
     private int age;

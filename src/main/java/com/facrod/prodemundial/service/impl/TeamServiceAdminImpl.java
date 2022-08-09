@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,17 +23,14 @@ public class TeamServiceAdminImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     @Override
-    public TeamDTO getTeam(String id) throws AppException {
-        var team = teamRepository.findById(id).orElseThrow(() -> {
-            log.error("Error al buscar equipo con id '{}'", id);
-            return new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
-        });
-        return TeamMapper.toDto(team);
+    public TeamDTO getTeam(String id) {
+        // Nunca se va a llamar a este método
+        return null;
     }
 
     @Override
     public List<TeamDTO> getTeams() {
-        return TeamMapper.toDto(teamRepository.findAll());
+        return new ArrayList<>();
     }
 
     @Override

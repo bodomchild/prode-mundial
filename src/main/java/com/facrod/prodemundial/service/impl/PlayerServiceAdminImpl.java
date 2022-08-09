@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Objects;
 
 @Slf4j
@@ -34,10 +33,7 @@ public class PlayerServiceAdminImpl implements PlayerService {
     @Override
     public Page<PlayerResponseDTO> getPlayers(String sortBy, int page) {
         // Nunca se va a llamar a este método
-        return Page.<PlayerResponseDTO>builder()
-                .data(Collections.emptyList())
-                .sort(sortBy)
-                .build();
+        return null;
     }
 
     @Override

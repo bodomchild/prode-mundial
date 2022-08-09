@@ -3,10 +3,7 @@ package com.facrod.prodemundial.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -23,9 +20,12 @@ public class Player implements Serializable {
     private Integer id;
 
     @Id
+    @Column(name = "team_id")
     private String teamId;
 
     private String name;
+
+    private String position;
 
     private int age;
 

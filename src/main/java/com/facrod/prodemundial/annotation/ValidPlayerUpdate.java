@@ -23,7 +23,7 @@ public @interface ValidPlayerUpdate {
 
     final class ValidPlayerUpdateValidator implements ConstraintValidator<ValidPlayerUpdate, PlayerUpdateDTO> {
         @Override
-        public boolean isValid(com.facrod.prodemundial.dto.PlayerUpdateDTO player, ConstraintValidatorContext constraintValidatorContext) {
+        public boolean isValid(PlayerUpdateDTO player, ConstraintValidatorContext constraintValidatorContext) {
             return player.getGoals() != null || player.getYellowCards() != null || player.getRedCards() != null;
         }
     }

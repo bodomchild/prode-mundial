@@ -50,7 +50,7 @@ public class PlayerController {
 
     @PatchMapping(consumes = "application/merge-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> updatePlayer(@RequestBody @Valid PlayerUpdateDTO player) throws AppException {
+    public ResponseEntity<Void> updatePlayerGoalsOrCards(@RequestBody @Valid PlayerUpdateDTO player) throws AppException {
         playerServiceAdmin.updatePlayerGoalsOrCards(player);
         return ResponseEntity.noContent().build();
     }
