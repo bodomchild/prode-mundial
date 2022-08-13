@@ -54,7 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void sendErrorResponse(HttpServletResponse response, AppException e) throws IOException {
+    private void sendErrorResponse(HttpServletResponse response, AppException e) {
         var error = new ErrorDTO();
         error.setStatus(e.getStatus().getReasonPhrase());
         error.setError(e.getMessage());
@@ -62,10 +62,6 @@ public class JWTFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(e.getStatus().value());
-
-        var out = response.getWriter();
-        out.write(gson.toJson(error));
-        out.flush();
     }
 
 }
