@@ -7,6 +7,7 @@ import com.facrod.prodemundial.dto.PlayerUpdateDTO;
 import com.facrod.prodemundial.entity.Player;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.repository.PlayerRepository;
+import com.facrod.prodemundial.repository.TeamRepository;
 import com.facrod.prodemundial.service.PlayerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +28,15 @@ class PlayerServiceImplTest {
     @Mock
     private PlayerRepository playerRepository;
 
+    @Mock
+    private TeamRepository teamRepository;
+
     private PlayerService playerService;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
-        playerService = new PlayerServiceImpl(playerRepository);
+        playerService = new PlayerServiceImpl(playerRepository, teamRepository);
     }
 
     @Test
@@ -59,6 +63,49 @@ class PlayerServiceImplTest {
 
         assertNotNull(actual);
         assertEquals(expected.getContent(), actual.getData());
+    }
+
+    @Test
+    void getPlayersByTeam_ok() throws AppException {
+        var teamId = "ARG";
+        var player = new Player();
+        player.setId(10);
+        player.setTeamId("ARG");
+        player.setName("Lionel Messi");
+        player.setPosition("FW");
+        player.setAge(35);
+
+        var playerDto = new PlayerResponseDTO();
+        playerDto.setId(10);
+        playerDto.setTeamId("ARG");
+        playerDto.setName("Lionel Messi");
+        playerDto.setPosition("FW");
+        playerDto.setAge(35);
+
+        var expected = List.of(playerDto);
+
+        when(teamRepository.existsById(teamId)).thenReturn(true);
+        when(playerRepository.findByTeamId(teamId)).thenReturn(List.of(player));
+
+        var actual = playerService.getPlayersByTeam(teamId);
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayersByTeam_teamNotFound() {
+        var teamId = "ARG";
+
+        var expected = new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
+
+        when(teamRepository.existsById(teamId)).thenReturn(false);
+
+        var actual = assertThrows(AppException.class, () -> playerService.getPlayersByTeam(teamId));
+
+        assertNotNull(actual);
+        assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.getMessage(), actual.getMessage());
     }
 
     @Test

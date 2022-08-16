@@ -43,6 +43,13 @@ class PlayerServiceAdminImplTest {
     }
 
     @Test
+    void getPlayersByTeam() throws AppException {
+        var actual = playerService.getPlayersByTeam("ARG");
+        assertNotNull(actual);
+        assertEquals(0, actual.size());
+    }
+
+    @Test
     void createPlayer_ok() throws AppException {
         var playerCreateDto = createPlayerCreateDTO();
         var playerId = new Player.PlayerId(10, "ARG");

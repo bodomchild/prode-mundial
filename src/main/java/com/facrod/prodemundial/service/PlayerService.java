@@ -8,9 +8,13 @@ import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.exceptions.OperationNotAllowedException;
 import com.facrod.prodemundial.pagination.Page;
 
+import java.util.List;
+
 public interface PlayerService {
 
     Page<PlayerResponseDTO> getPlayers(String sortBy, int page);
+
+    List<PlayerResponseDTO> getPlayersByTeam(String teamId) throws AppException;
 
     default PlayerResponseDTO createPlayer(PlayerCreateDTO player) throws AppException {
         throw new OperationNotAllowedException();

@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/players")
@@ -32,6 +33,11 @@ public class PlayerController {
     public ResponseEntity<Page<PlayerResponseDTO>> getPlayers(@RequestParam(value = "q", required = false) String sortBy,
                                                               @RequestParam(value = "p", defaultValue = "0") int page) {
         return ResponseEntity.ok(playerService.getPlayers(sortBy, page));
+    }
+
+    @GetMapping("/{teamId}")
+    public ResponseEntity<List<PlayerResponseDTO>> getPlayersByTeam(@PathVariable("teamId") String teamId) throws AppException {
+        return ResponseEntity.ok(playerService.getPlayersByTeam(teamId));
     }
 
     @PostMapping

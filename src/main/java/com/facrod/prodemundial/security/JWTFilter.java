@@ -3,7 +3,6 @@ package com.facrod.prodemundial.security;
 import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
 import com.facrod.prodemundial.service.impl.ProdeUserDetailsServiceImpl;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 
-    private final Gson gson;
     private final JWTUtil jwtUtil;
     private final ProdeUserDetailsServiceImpl prodeUserDetailsService;
 

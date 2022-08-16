@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -34,6 +36,12 @@ public class PlayerServiceAdminImpl implements PlayerService {
     public Page<PlayerResponseDTO> getPlayers(String sortBy, int page) {
         // Nunca se va a llamar a este método
         return null;
+    }
+
+    @Override
+    public List<PlayerResponseDTO> getPlayersByTeam(String teamId) {
+        // Nunca se va a llamar a este método
+        return Collections.emptyList();
     }
 
     @Override

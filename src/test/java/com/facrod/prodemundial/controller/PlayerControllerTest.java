@@ -13,9 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
@@ -37,9 +34,6 @@ class PlayerControllerTest {
     void setUp() {
         openMocks(this);
         playerController = new PlayerController(playerService, playerServiceAdmin);
-        var request = new MockHttpServletRequest();
-        request.setRequestURI("/api/v1/players");
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Test
@@ -61,6 +55,32 @@ class PlayerControllerTest {
         var actual = playerController.getPlayers("goals", 0);
 
         assertNotNull(actual.getBody());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayersByTeam() throws AppException {
+        var teamId = "ARG";
+        var data = List.of(createPlayerResponseDTO());
+        var expected = ResponseEntity.ok(data);
+
+        when(playerService.getPlayersByTeam(teamId)).thenReturn(data);
+
+        var actual = playerController.getPlayersByTeam(teamId);
+
+        assertNotNull(actual.getBody());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayersByTeam_error() throws AppException {
+        var expected = new AppException(HttpStatus.NOT_FOUND, "Equipo no encontrado");
+
+        when(playerService.getPlayersByTeam("ARG")).thenThrow(expected);
+
+        var actual = assertThrows(AppException.class, () -> playerController.getPlayersByTeam("ARG"));
+
+        assertNotNull(actual);
         assertEquals(expected, actual);
     }
 
