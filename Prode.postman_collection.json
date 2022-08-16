@@ -222,7 +222,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "26"
+									"value": "2"
 								}
 							]
 						}
@@ -323,7 +323,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 2,\r\n    \"start_time\": \"2022-11-21 07:00:00\"\r\n}",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"start_time\": \"2022-11-21 13:00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -365,13 +365,37 @@
 					"response": []
 				},
 				{
+					"name": "Get By Team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/players/:teamId",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"players",
+								":teamId"
+							],
+							"variable": [
+								{
+									"key": "teamId",
+									"value": "ARG"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Player",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 10,\r\n    \"team_id\": \"ARG\",\r\n    \"name\": \"Lionel Messi\",\r\n    \"age\": 35\r\n}",
+							"raw": "{\r\n    \"id\": 10,\r\n    \"team_id\": \"ARG\",\r\n    \"name\": \"Lionel Messi\",\r\n    \"position\": \"FW\",\r\n    \"age\": 35\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
