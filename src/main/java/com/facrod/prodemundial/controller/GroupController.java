@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/groups")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class GroupController {
 
     private final GroupService groupService;
