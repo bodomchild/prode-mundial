@@ -1,18 +1,19 @@
 package com.facrod.prodemundial.service;
 
-import com.facrod.prodemundial.dto.PredictionCreateDTO;
-import com.facrod.prodemundial.entity.dynamodb.Prediction;
+import com.facrod.prodemundial.dto.MatchPredictionCreateDTO;
+import com.facrod.prodemundial.entity.dynamodb.MatchPrediction;
+import com.facrod.prodemundial.exceptions.AppException;
 
 import java.util.List;
 
 public interface PredictionService {
 
-    Prediction save(String username, PredictionCreateDTO prediction);
+    MatchPrediction save(String username, MatchPredictionCreateDTO prediction) throws AppException;
 
-    Prediction update(String username, Long matchId, PredictionCreateDTO prediction);
+    MatchPrediction update(String username, Long matchId, MatchPredictionCreateDTO prediction) throws AppException;
 
-    List<Prediction> getAllByUsername(String username);
+    List<MatchPrediction> getAllByUsername(String username) throws AppException;
 
-    Prediction getByMatchId(String username, Long matchId);
+    MatchPrediction getByMatchId(String username, Long matchId) throws AppException;
 
 }

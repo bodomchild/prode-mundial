@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @DynamoDBTable(tableName = "test_prediction")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Prediction {
+public class MatchPrediction {
 
     @DynamoDBHashKey
     private String username;
@@ -36,5 +36,7 @@ public class Prediction {
 
     @DynamoDBAttribute(attributeName = "penalties")
     private MatchExtra penalties;
+
+    // TODO: 11/11/22 agregar goleadores
 
 }

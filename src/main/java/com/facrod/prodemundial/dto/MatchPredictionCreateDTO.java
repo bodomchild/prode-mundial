@@ -19,7 +19,7 @@ import javax.validation.constraints.PositiveOrZero;
 @EqualsAndHashCode
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @ValidPrediction
-public class PredictionCreateDTO {
+public class MatchPredictionCreateDTO {
 
     @NotNull(message = "El id del partido es obligatorio")
     @Positive(message = "El id del partido no puede ser negativo")
@@ -46,6 +46,15 @@ public class PredictionCreateDTO {
 
         @PositiveOrZero(message = "La cantidad de goles debe ser mayor o igual a 0")
         private int awayScore;
+    }
+
+    @Data
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    static class ScorerDTO {
+        @Positive(message = "El id del jugador no puede ser negativo")
+        @Max(value = 26, message = "El id del jugador no puede ser mayor que 26")
+        private Integer id;
+        private int goals;
     }
 
 }

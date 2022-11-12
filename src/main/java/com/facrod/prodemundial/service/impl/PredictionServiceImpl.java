@@ -1,11 +1,14 @@
 package com.facrod.prodemundial.service.impl;
 
-import com.facrod.prodemundial.dto.PredictionCreateDTO;
-import com.facrod.prodemundial.entity.dynamodb.Prediction;
-import com.facrod.prodemundial.mapper.PredictionMapper;
+import com.facrod.prodemundial.dto.MatchPredictionCreateDTO;
+import com.facrod.prodemundial.entity.dynamodb.MatchPrediction;
+import com.facrod.prodemundial.exceptions.AppException;
+import com.facrod.prodemundial.mapper.MatchPredictionMapper;
 import com.facrod.prodemundial.repository.PredictionRepository;
+import com.facrod.prodemundial.repository.ProdeUserRepository;
 import com.facrod.prodemundial.service.PredictionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,25 +19,47 @@ import java.util.stream.Collectors;
 public class PredictionServiceImpl implements PredictionService {
 
     // TODO: 28/8/22 controlar excepciones de no encontrado, no existente y esas cosas
+    private static final String USER_NOT_FOUND = "Usuario no encontrado";
 
     private final PredictionRepository predictionRepository;
+    private final ProdeUserRepository prodeUserRepository;
 
     @Override
-    public Prediction save(String username, PredictionCreateDTO prediction) {
-        var predictionEntity = PredictionMapper.toEntity(prediction);
+    public MatchPrediction save(String username, MatchPredictionCreateDTO prediction) throws AppException {
+        if (!prodeUserRepository.existsByUsername(username)) {
+            throw new AppException(HttpStatus.NOT_FOUND, USER_NOT_FOUND);
+        }
+
+        if (predictionRepository.getByUsernameAndMatchId(username, prediction.getMatchId()) != null) {
+            throw new AppException(HttpStatus.CONFLICT, "Ya existe una predicción para el partido");
+        }
+
+        var predictionEntity = MatchPredictionMapper.toEntity(prediction);
         predictionEntity.setUsername(username);
         return predictionRepository.save(predictionEntity);
     }
 
     @Override
-    public Prediction update(String username, Long matchId, PredictionCreateDTO prediction) {
-        var predictionEntity = PredictionMapper.toEntity(prediction);
+    public MatchPrediction update(String username, Long matchId, MatchPredictionCreateDTO prediction) throws AppException {
+        if (!prodeUserRepository.existsByUsername(username)) {
+            throw new AppException(HttpStatus.NOT_FOUND, USER_NOT_FOUND);
+        }
+
+        if (predictionRepository.getByUsernameAndMatchId(username, prediction.getMatchId()) == null) {
+            throw new AppException(HttpStatus.NOT_FOUND, "No existe una predicción para el partido");
+        }
+
+        var predictionEntity = MatchPredictionMapper.toEntity(prediction);
         predictionEntity.setUsername(username);
         return predictionRepository.update(username, matchId, predictionEntity);
     }
 
     @Override
-    public List<Prediction> getAllByUsername(String username) {
+    public List<MatchPrediction> getAllByUsername(String username) throws AppException {
+        if (!prodeUserRepository.existsByUsername(username)) {
+            throw new AppException(HttpStatus.NOT_FOUND, USER_NOT_FOUND);
+        }
+
         return predictionRepository.getAllByUsername(username).stream()
                 .map(prediction -> {
                     prediction.setUsername(null);
@@ -43,7 +68,11 @@ public class PredictionServiceImpl implements PredictionService {
     }
 
     @Override
-    public Prediction getByMatchId(String username, Long matchId) {
+    public MatchPrediction getByMatchId(String username, Long matchId) throws AppException {
+        if (!prodeUserRepository.existsByUsername(username)) {
+            throw new AppException(HttpStatus.NOT_FOUND, USER_NOT_FOUND);
+        }
+
         var prediction = predictionRepository.getByUsernameAndMatchId(username, matchId);
         prediction.setUsername(null);
         return prediction;

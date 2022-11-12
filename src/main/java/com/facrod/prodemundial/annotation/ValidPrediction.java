@@ -1,6 +1,6 @@
 package com.facrod.prodemundial.annotation;
 
-import com.facrod.prodemundial.dto.PredictionCreateDTO;
+import com.facrod.prodemundial.dto.MatchPredictionCreateDTO;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -21,9 +21,9 @@ public @interface ValidPrediction {
 
     Class<?>[] payload() default {};
 
-    final class ValidPredictionValidator implements ConstraintValidator<ValidPrediction, PredictionCreateDTO> {
+    final class ValidPredictionValidator implements ConstraintValidator<ValidPrediction, MatchPredictionCreateDTO> {
         @Override
-        public boolean isValid(PredictionCreateDTO prediction, ConstraintValidatorContext context) {
+        public boolean isValid(MatchPredictionCreateDTO prediction, ConstraintValidatorContext context) {
             context.disableDefaultConstraintViolation();
             if (prediction.getExtraTime() != null) {
                 var fullTimeDraw = prediction.getHomeScore() == prediction.getAwayScore();

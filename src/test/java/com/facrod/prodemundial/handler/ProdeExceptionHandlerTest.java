@@ -1,7 +1,8 @@
-package com.facrod.prodemundial.controller;
+package com.facrod.prodemundial.handler;
 
 import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
+import com.facrod.prodemundial.handler.ProdeExceptionHandler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ExceptionHandlerControllerTest {
+class ProdeExceptionHandlerTest {
 
-    private final ExceptionHandlerController controller = new ExceptionHandlerController();
+    private final ProdeExceptionHandler controller = new ProdeExceptionHandler();
 
     @Test
     void appExceptionHandler() {

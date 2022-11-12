@@ -1,4 +1,4 @@
-package com.facrod.prodemundial.controller;
+package com.facrod.prodemundial.handler;
 
 import com.facrod.prodemundial.dto.ErrorDTO;
 import com.facrod.prodemundial.exceptions.AppException;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
-public class ExceptionHandlerController {
+public class ProdeExceptionHandler {
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ErrorDTO> appExceptionHandler(AppException e) {
