@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PredictionRepository {
+public class MatchPredictionRepository {
 
     private final DynamoDBMapper dynamoDBMapper;
 

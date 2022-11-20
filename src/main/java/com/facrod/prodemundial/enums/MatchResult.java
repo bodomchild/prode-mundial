@@ -1,5 +1,6 @@
 package com.facrod.prodemundial.enums;
 
+import com.facrod.prodemundial.dto.MatchExtraDTO;
 import com.facrod.prodemundial.dto.MatchPredictionCreateDTO;
 import com.facrod.prodemundial.entity.WCMatch;
 import com.facrod.prodemundial.entity.WCPenaltiesRound;
@@ -51,7 +52,7 @@ public enum MatchResult {
         return AWAY_WIN;
     }
 
-    private static MatchResult getPenaltiesRoundWinner(MatchPredictionCreateDTO.MatchExtraDTO predictionPenaltiesRound) {
+    private static MatchResult getPenaltiesRoundWinner(MatchExtraDTO predictionPenaltiesRound) {
         if (predictionPenaltiesRound.getHomeScore() > predictionPenaltiesRound.getAwayScore()) {
             return HOME_WIN;
         }
@@ -65,7 +66,7 @@ public enum MatchResult {
         return AWAY_WIN;
     }
 
-    private static MatchResult getExtraTimeWinner(MatchPredictionCreateDTO.MatchExtraDTO predictionExtraTime) {
+    private static MatchResult getExtraTimeWinner(MatchExtraDTO predictionExtraTime) {
         if (predictionExtraTime.getHomeScore() > predictionExtraTime.getAwayScore()) {
             return HOME_WIN;
         }

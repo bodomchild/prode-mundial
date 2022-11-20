@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -19,6 +16,7 @@ public class PlayerUpdateDTO {
 
     @NotNull(message = "El número del jugador es obligatorio")
     @Positive(message = "El número del jugador debe ser positivo")
+    @Max(value = 26, message = "El número del jugador no puede ser mayor que 26")
     private Integer id;
 
     @NotBlank(message = "El id del equipo es obligatorio")
